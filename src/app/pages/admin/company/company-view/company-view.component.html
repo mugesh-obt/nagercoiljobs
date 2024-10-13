@@ -1,0 +1,190 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <!-- Top bar -->
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <!-- Side bar -->
+        <app-sidebar [title]="'Dashboard'"></app-sidebar>
+
+        <!-- Content section start -->
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <!-- Company Info Section -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="d-flex">
+                        <!-- Company Logo -->
+                        <div class="logo-section">
+                            <img src="{{ result?.company?.user?.profile ? imgurl + result.company.user.profile : 'assets/images/no-picture.png' }}"
+                                alt="Company Logo" class="img-fluid" style="width: 150px;">
+                        </div>
+                        <!-- Company Info -->
+                        <div class="company-info ml-3">
+                            <h5>{{ result?.company?.user?.name }}</h5>
+                            <p>{{ result?.company?.user?.email }}</p>
+                            <a [href]="result?.company?.website" target="_blank">
+                                {{ result?.company?.website }}
+                            </a>
+
+                            <!-- Toggle Switches - Active and Verification -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="custom-control custom-switch mr-3">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="switchAccountStatus{{ result?.company?.user_id }}"
+                                        [checked]="result?.company?.user?.status === 'active'"
+                                        (change)="activate_user(result?.company?.user_id)">
+                                    <label class="custom-control-label"
+                                        for="switchAccountStatus{{ result?.company?.user_id }}">
+                                        {{ result?.company?.user?.status === 'active' ? 'Active' : 'In-Active' }}
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="switchEmailVerification{{ result?.company?.user_id }}"
+                                        [checked]="result?.company?.user?.email_verified_at != null"
+                                        (change)="modify_verification(result?.company?.user_id)">
+                                    <label class="custom-control-label"
+                                        for="switchEmailVerification{{ result?.company?.user_id }}">
+                                        {{ result?.company?.user?.email_verified_at != null ? 'Verified' :
+                                        'Not-Verified' }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Details and Bio/Vision Section inside card -->
+                <div class="main-card mb-3 card p-3">
+                    <!-- Company Details Section -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p><strong>Establishment Date:</strong> {{ result?.company?.establishment_date | date:'dd
+                                MMM, YYYY' }}</p>
+                            <p><strong>Industry Type:</strong> {{result?.company?.industry_id?
+                                get_industry(result.company.industry_id):'' }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Team Size:</strong> {{ result?.company?.team_size ?
+                                get_teamsize(result.company.team_size) : ''}}</p>
+                            <p><strong>Country:</strong> {{ result?.company?.location }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Phone:</strong> {{ result?.company?.company_phone }}</p>
+                            <p><strong>Contact Email:</strong> {{ result?.company?.company_email }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio and Vision Section inside card -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Bio</h5>
+                            <p [innerHTML]="result?.company?.bio"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Vision</h5>
+                            <p [innerHTML]="result?.company?.vision"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Map Section (Full Width) -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card p-3 mb-3">
+                            <h5>Location</h5>
+                            <p>{{result?.company?.location}}</p>
+                            <iframe src="https://www.google.com/maps/embed?pb={{ result?.company?.google_map_link }}"
+                                width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Jobs Table (Full Width) -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5>Company Jobs</h5>
+                                <!-- All Jobs Button -->
+                                <a routerLink="/jobs" class="btn btn-secondary btn-sm">
+                                    View All Jobs
+                                </a>
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Job</th>
+                                        <th>Category</th>
+                                        <th>Salary</th>
+                                        <th>Deadline</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let job of result?.company?.jobs; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ job.title }}</td>
+                                        <td>
+                                            <div>
+                                                {{ get_job_category(job.category_id) }}
+                                                <div class="text-muted small">{{ get_job_role(job.job_role_id) }}</div>
+                                            </div>
+                                        </td>
+                                        <td class="text-end">
+                                            <div *ngIf="job.salary === 'custom_salary'">
+                                                {{ job.salary }}
+                                                <div class="text-muted small">₹ {{ job.custom_salary }}</div>
+                                                <div class="text-muted small">{{ job.salary_type }}</div>
+                                            </div>
+                                            <div *ngIf="job.salary === 'salary_range'">
+                                                {{ job.salary }}
+                                                <div class="text-muted small">₹ {{ job.min_salary }} - ₹ {{
+                                                    job.max_salary }}</div>
+                                                <div class="text-muted small">{{ job.salary_type }}</div>
+                                            </div>
+                                        </td>
+                                        <td>{{ job.deadline | date: 'dd MMM, YYYY' }} <div class="text-muted small">{{
+                                                job.status }}</div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="switchJobStatus{{job.id}}" [checked]="job?.status === 'active'"
+                                                    (change)="change_job_status(job)">
+                                                <label class="custom-control-label" for="switchJobStatus{{job.id}}">{{
+                                                    job?.status === 'active' ? 'Active' : 'In-Active' }}</label>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a routerLink="/job/view/{{job.id}}" class="btn btn-link">
+                                                View details <i class="fa-solid fa-angle-right"></i>
+                                            </a>
+                                            <a routerLink="/job/edit/{{job.id}}" class="btn btn-primary btn-sm">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="delete(job.id)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-wrapper-footer">
+                    <div class="app-footer">
+                        <div class="app-footer__inner">
+                            <!-- Footer content can go here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content section end -->
+        </div>
+    </div>

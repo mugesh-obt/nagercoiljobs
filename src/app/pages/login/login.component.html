@@ -1,0 +1,17 @@
+<div class="login-page">
+  <div class="form">
+    <form class="login-form " [formGroup]="form" (ngSubmit)="doLogin()">
+      <h2>SIGN IN</h2>
+      <input type="email" placeholder="Email" formControlName="email" autocomplete="on" />
+      <span class="error" *ngIf="err.email">{{err.email}}</span>
+
+      <input type="password" placeholder="Password" formControlName="password"autocomplete="off" />
+      <span class="error" *ngIf="err.password">{{err.password}}</span>
+
+      <button type="submit">SIGN IN</button>
+      <p class="message">
+        <a routerLink="/forgot-password">Forgot your password?</a>
+      </p>
+    </form>
+  </div>
+</div>

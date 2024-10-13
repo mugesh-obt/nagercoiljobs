@@ -1,0 +1,103 @@
+.vertical-nav-menu li a {
+    padding: 0px 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-icons span {
+    margin-left: 10px;
+}
+
+.app-header__logo .logo-src {
+    align-items: center;
+    display: flex;
+    height: 23px;
+    width: 97px;
+}
+
+.app-header__logo .logo-src img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.add-signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Ai generated code */
+
+.scrollbar-sidebar {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+}
+
+.sidebar-footer {
+    position: fixed;
+    bottom: 0;
+    width: 250px;
+    padding: 15px;
+    text-align: center;
+}
+
+.logout-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.logout-btn i {
+    margin-right: 8px;
+}
+
+.logout-btn:hover {
+    background-color: #0056b3;
+}
+
+.logout-btn:focus {
+    outline: none;
+}
+
+.scrollbar-sidebar {
+    padding-bottom: 60px;
+}
+
+.per-page-dropdown {
+    margin-bottom: 20px;
+    width: 100px;
+}
+
+/* company image frame */
+.image-upload-frame {
+    position: relative;
+    width: 200px;
+    /* Adjust as needed */
+    height: 200px;
+    /* Adjust as needed */
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.image-upload-frame .img-thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.cancel-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+/* cretae job progress bar */
+
+
+
+

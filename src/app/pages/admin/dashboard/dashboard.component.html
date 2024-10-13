@@ -1,0 +1,367 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <!-- Top bar -->
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <!-- Side bar -->
+        <app-sidebar [title]="'Dashboard'"></app-sidebar>
+        <!-- Content section start -->
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="app-page-title">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-heading">
+                            <div class="page-title-icon">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </div>
+                            <div>Admin Dashboard
+                                <div class="page-title-subheading">This is an example dashboard created using build-in
+                                    elements and
+                                    components.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content bg-midnight-bloom">
+                            <div class="widget-content-wrapper text-white">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Earnings</div>
+                                    <div class="widget-subheading">Total Earnings</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-white">
+                                        <span>₹ {{ result?.counts?.earnings}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content bg-arielle-smile">
+                            <div class="widget-content-wrapper text-white">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Candidates</div>
+                                    <div class="widget-subheading">Total Candidates</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-white">
+                                        <span>{{result?.counts?.users?.candidates}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content bg-grow-early">
+                            <div class="widget-content-wrapper text-white">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Companies</div>
+                                    <div class="widget-subheading">Total Companies</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-white">
+                                        <span>{{result?.counts?.users?.companies}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content bg-grow-early">
+                            <div class="widget-content-wrapper text-white">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Verified Users</div>
+                                    <div class="widget-subheading">Total Verified Users</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-white">
+                                        <span>{{result?.counts?.users?.verified_users}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">Active Jobs</div>
+                                        <div class="widget-subheading">Total Active Jobs</div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-success">
+                                            <span>{{result?.counts?.jobs?.active}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">Expired Jobs</div>
+                                        <div class="widget-subheading">Total Expired Jobs</div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-danger">
+                                            <span>{{result?.counts?.jobs?.expired}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">Pending Jobs</div>
+                                        <div class="widget-subheading">Total Pending Jobs</div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-warning">
+                                            <span>{{result?.counts?.jobs?.pending}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xl-3">
+                        <div class="card mb-3 widget-content">
+                            <div class="widget-content-outer">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">Jobs</div>
+                                        <div class="widget-subheading">All Jobs</div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-warning">
+                                            <span>{{result?.counts?.jobs?.all}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="mb-3 card">
+                            <div class="card-header-tab card-header-tab-animation card-header">
+                                <div class="card-header-title">
+                                    <i class="header-icon lnr-apartment icon-gradient bg-love-kiss"> </i>
+                                    Earnings
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="tabs-eg-77">
+                                        <div id="barChart" style="width: 500px; height: 400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="mb-3 card">
+                            <div class="card-header-tab card-header-tab-animation card-header">
+                                <div class="card-header-title">
+                                    <i class="header-icon lnr-apartment icon-gradient bg-love-kiss"> </i>
+                                    Popular Jobs
+                                </div>
+                            </div>
+                            <div id="pieChart" style="width: 400px; height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-header">Recently Published Jobs
+                                <div class="btn-actions-pane-right">
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <button class="active btn btn-focus">View all</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th>Title</th>
+                                            <th class="text-center">Experience</th>
+                                            <th class="text-center">Job type</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let jobs of result?.recents?.jobs;let i=index;">
+                                            <td class="text-center text-muted">{{ i+1 }}</td>
+                                            <td>
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-left flex2">
+                                                        <div class="widget-heading">{{ jobs?.title || '' }}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">{{ jobs?.experience || '' }}</td>
+                                            <td class="text-center">{{ jobs?.job_type?.name || '' }}</td>
+                                            <td class="text-center">
+                                                <button type="button" id="PopoverCustomT-1"
+                                                    class="btn btn-primary btn-sm"><i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-header">Recently Purchased Orders
+                                <div class="btn-actions-pane-right">
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <button class="active btn btn-focus">View all</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order No</th>
+                                            <th>Amount</th>
+                                            <th class="text-center">Plan Name</th>
+                                            <th class="text-center">Payment Provider</th>
+                                            <th class="text-center">Payment Status</th>
+                                            <th class="text-center">Created Time</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let orders of result?.recents?.orders;">
+                                            <td class="text-center text-muted">{{ orders?.id || '' }}</td>
+                                            <td class="text-center">₹ {{ orders?.plan?.price || '' }}</td>
+                                            <td class="text-center">
+                                                <div class="badge badge-primary">{{ orders?.plan?.label || '' }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-left flex2">
+                                                        <div class="widget-heading">
+                                                            {{ orders?.payment_method || '' }}
+                                                        </div>
+                                                        <!-- <div class="widget-subheading opacity-7"></div> -->
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="badge badge-warning">{{ orders?.status || '' }}</div>
+                                            </td>
+                                            <td class="text-center">{{ created_time(orders.created_at) }}</td>
+                                            <td class="text-center">
+                                                <button type="button" id="PopoverCustomT-1"
+                                                    class="btn btn-primary btn-sm"><i
+                                                        class="fa-solid fa-eye"></i></button>
+                                                <button type="button" id="PopoverCustomT-1"
+                                                    class="btn btn-warning btn-sm"><i
+                                                        class="fa-solid fa-download"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-header">Latest Users
+                                <div class="btn-actions-pane-right">
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <button class="active btn btn-focus">View all candidates</button>
+                                    </div>
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <button class="active btn btn-success">View all company</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th>Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Created time</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let users of result?.recents?.users;let i=index;">
+                                            <td class="text-center text-muted">{{ i+1 }}</td>
+                                            <td>
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-wrapper">
+                                                        <div class="widget-content-left mr-3">
+                                                            <div class="widget-content-left">
+                                                                <img width="40" class="rounded-circle"
+                                                                    src="{{ users?.profile ? imgurl+users.profile : 'assets/images/no-img.png' }}"
+                                                                    alt="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="widget-content-left flex2">
+                                                            <div class="widget-heading">{{ users?.name || '' }}</div>
+                                                            <div class="widget-subheading opacity-7">{{ users?.role ||
+                                                                '' }}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">{{ users?.email || '' }}</td>
+                                            <td class="text-center">
+                                                <div class="badge badge-success">{{ users?.status || '' }}</div>
+                                            </td>
+                                            <td class="text-center text-muted">{{ created_time(users.created_at) }}</td>
+                                            <td class="text-center">
+                                                <button type="button" id="PopoverCustomT-1"
+                                                    class="btn btn-primary btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-block text-center card-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer">
+                    <div class="app-footer__inner">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Content section end -->
+    </div>
+</div>

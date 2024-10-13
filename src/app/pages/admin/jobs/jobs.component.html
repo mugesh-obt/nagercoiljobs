@@ -1,0 +1,188 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <!-- Top bar -->
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <!-- Side bar -->
+        <app-sidebar [title]="'All Jobs'"></app-sidebar>
+        <!-- Content section start -->
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="app-page-title">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-heading d-flex align-items-center">
+                            <div class="page-title-icon mr-3">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <div>All Jobs</div>
+                        </div>
+                        <div class="page-title-actions">
+                            <a routerLink="/job/create" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Create
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <form [formGroup]="Form">
+                    <div class="row mb-3">
+                        <!-- Search Field -->
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" placeholder="Search..." formControlName="title"
+                                (keyup)="onSearch($event)" />
+                        </div>
+                        <!-- Job Category Multiselect -->
+                        <div class="col-md-3">
+                            <angular2-multiselect [data]="result.job_categories" formControlName="job_category"
+                                [settings]="settings.job_category" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <!-- Job Type Multiselect -->
+                        <div class="col-md-3">
+                            <angular2-multiselect [data]="result.job_types" formControlName="job_type"
+                                [settings]="settings.job_type" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <!-- Experience Multiselect -->
+                        <div class="col-md-3">
+                            <angular2-multiselect [data]="options.experience" formControlName="experience"
+                                [settings]="settings.experience" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <!-- Status Multiselect -->
+                        <div class="col-md-3">
+                            <angular2-multiselect [data]="options.status" formControlName="status"
+                                [settings]="settings.status" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" (click)="resetFilters()" class="btn btn-secondary ml-2">
+                                <i class="fa-solid fa-undo"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center per-page-dropdown-container">
+                        <label for="per_page" class="mr-2">Show</label>
+                        <select id="per_page" class="form-control per-page-dropdown" [(ngModel)]="per_page"
+                            (change)="onItemsPerPageChange($event)">
+                            <option *ngFor="let count of perPageOptions" [value]="count">{{ count }}</option>
+                        </select>
+                        <label for="per_page" class="ml-2">entries</label>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end mb-3">
+                        <button type="button" class="btn btn-danger btn-sm" (click)="deleteSelected()">
+                            <i class="fa-solid fa-trash"></i> Delete All 
+                        </button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="table-responsive">
+                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                <input type="checkbox" (change)="toggleSelectAll($event)" />
+                                            </th>
+                                            <th class="text-center" (click)="doSort('id')">#<i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'id' && dir === 'asc', 'fa-sort-down': column === 'id' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center" (click)="doSort('title')">Job <i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'title' && dir === 'asc', 'fa-sort-down': column === 'title' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center" (click)="doSort('category_name')">Category/Role <i
+                                                    class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'category_name' && dir === 'asc', 'fa-sort-down': column === 'category_name' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center">Salary</th>
+                                            <th class="text-center" (click)="doSort('deadline')">Deadline <i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'deadline' && dir === 'asc', 'fa-sort-down': column === 'deadline' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let job of result.jobs | paginate: { itemsPerPage: per_page, currentPage: page, totalItems: showing.total }; let i = index">
+                                            <td class="text-center">
+                                                <input type="checkbox" [(ngModel)]="job.selected" />
+                                            </td>
+                                            <td class="text-center text-muted">{{ i + 1 }}</td>
+                                            <td class="text-center">
+                                                <div class="widget-content p-0 d-flex align-items-center">
+                                                    <div class="widget-heading">{{job?.title || ''}}</div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">{{ get_category(job?.category_id) }}</td>
+                                            <td class="text-end">
+                                                <div *ngIf="job?.salary === 'custom_salary'">
+                                                    {{ job?.salary }}
+                                                    <div class="text-muted small">₹ {{ job?.custom_salary }}</div>
+                                                    <div class="text-muted small">{{ job?.salary_type }}</div>
+                                                </div>
+                                                <div *ngIf="job?.salary === 'salary_range'">
+                                                    {{ job?.salary }}
+                                                    <div class="text-muted small">₹ {{ job?.min_salary }} - ₹ {{
+                                                        job?.max_salary }}</div>
+                                                    <div class="text-muted small">{{ job?.salary_type }}</div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">{{ job?.deadline | date: 'dd MMM, YYYY' || '' }}
+                                            </td>
+                                            <!-- Bootstrap Switch for Status -->
+                                            <td class="text-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="switchStatus{{job.id}}" [checked]="job?.status === 'active'"
+                                                        (change)="activate_job(job)">
+                                                    <label class="custom-control-label" for="switchStatus{{job.id}}">{{
+                                                        job?.status === 'active' ? 'Active' : 'Inactive'
+                                                        }}</label>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <a routerLink="/job/view/{{job.id}}" class="btn btn-link">
+                                                    View details <i class="fa-solid fa-angle-right"></i>
+                                                </a>
+                                                <a routerLink="/job/edit/{{job.id}}" class="btn btn-primary btn-sm">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    (click)="delete(job.id)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-block card-footer d-flex justify-content-between align-items-center">
+                                <p class="mb-0">
+                                    Showing {{ showing.from }} to {{ showing.to }} of {{ showing.total }} jobs
+                                </p>
+                                <div>
+                                    <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                        (pageChange)="onPageChange($event)"></pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-wrapper-footer">
+            <div class="app-footer">
+                <div class="app-footer__inner">
+                    <!-- Footer content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content section end -->
+</div>

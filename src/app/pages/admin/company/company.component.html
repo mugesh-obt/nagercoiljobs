@@ -1,0 +1,180 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <!-- Top bar -->
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <!-- Side bar -->
+        <app-sidebar [title]="'All Companies'"></app-sidebar>
+        <!-- Content section start -->
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="app-page-title">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-heading d-flex align-items-center">
+                            <div class="page-title-icon mr-3">
+                                <i class="fa-solid fa-building"></i>
+                            </div>
+                            <div>All Companies</div>
+                        </div>
+                        <div class="page-title-actions">
+                            <a routerLink="/company/create" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Create
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <form [formGroup]="Form">
+                    <div class="row mb-3">
+                        <!-- Search Field -->
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" placeholder="Search..."
+                                formControlName="company_name" (keyup)="onSearch($event)" />
+                        </div>
+                        <!-- Organization Type Multiselect -->
+                        <div class="col-md-3">
+                            <angular2-multiselect [data]="result.organizations" formControlName="organization_id"
+                                [settings]="settings.organization" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <!-- Industry Type Multiselect -->
+                        <div class="col-md-3">
+                            <angular2-multiselect [data]="result.industries" formControlName="industry_id"
+                                [settings]="settings.industry" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <!-- Email Verification Multiselect -->
+                        <div class="col-md-3">
+                            <angular2-multiselect [data]="options.verification" formControlName="is_verified"
+                                [settings]="settings.verification" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" (click)="resetFilters()" class="btn btn-secondary ml-2">
+                                <i class="fa-solid fa-undo"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center per-page-dropdown-container">
+                        <label for="per_page" class="mr-2">Show</label>
+                        <select id="per_page" class="form-control per-page-dropdown" [(ngModel)]="per_page"
+                            (change)="onItemsPerPageChange($event)">
+                            <option *ngFor="let count of perPageOptions" [value]="count">{{ count }}</option>
+                        </select>
+                        <label for="per_page" class="ml-2">entries</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="table-responsive">
+                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" (click)="doSort('id')">#<i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'id' && dir === 'asc', 'fa-sort-down': column === 'id' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th (click)="doSort('company_name')">Company <i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'company_name' && dir === 'asc', 'fa-sort-down': column === 'company_name' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center">Active Job</th>
+                                            <th class="text-center">Organization</th>
+                                            <th class="text-center" (click)="doSort('establishment_date')">Establishment
+                                                Date<i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'establishment_date' && dir === 'asc', 'fa-sort-down': column === 'establishment_date' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center">Account Status</th>
+                                            <th class="text-center">Email Verification</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let company of result.companies | paginate: { itemsPerPage: per_page, currentPage: page, totalItems: showing.total }; let i = index">
+                                            <td class="text-center text-muted">{{ i + 1 }}</td>
+                                            <td class="text-center">
+                                                <div class="widget-content p-0 d-flex align-items-center">
+                                                    <img width="40" class="rounded-circle mr-3"
+                                                        src="{{ company?.user?.profile ? imgurl+company.user.profile : 'assets/images/no-img.png' }}"
+                                                        alt="Avatar">
+                                                    <div class="flex-column">
+                                                        <div class="widget-heading">{{company?.user?.name || ''}}</div>
+                                                        <div class="widget-subheading opacity-7">{{company?.user?.email
+                                                            || ''}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">{{ company?.industry?.name || '' }}</td>
+                                            <td class="text-center">{{ company?.organization?.name || '' }}</td>
+                                            <td class="text-center">{{ company?.establishment_date | date: 'dd MMM,
+                                                YYYY' || '' }}</td>
+                                            <!-- Bootstrap Switch for Account Status -->
+                                            <td class="text-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="switchAccountStatus{{company.user_id}}"
+                                                        [checked]="company?.user?.status === 'active'"
+                                                        (change)="activate_user(company)">
+                                                    <label class="custom-control-label"
+                                                        for="switchAccountStatus{{company.user_id}}">{{
+                                                        company?.user?.status
+                                                        ===
+                                                        'active' ? 'Active' : 'InActive'
+                                                        }}</label>
+                                                </div>
+                                            </td>
+                                            <!-- Bootstrap Switch for Email Verification -->
+                                            <td class="text-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="switchEmailVerification{{company.user_id}}"
+                                                        [checked]="company?.user?.email_verified_at != null"
+                                                        (change)="modify_verification(company)">
+                                                    <label class="custom-control-label"
+                                                        for="switchEmailVerification{{company.user_id}}">{{
+                                                        company?.user?.email_verified_at != null ? 'Verified' :
+                                                        'Not Verified' }}</label>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <a routerLink="/company/view/{{company.user_id}}" class="btn btn-link">
+                                                    View details <i class="fa-solid fa-angle-right"></i>
+                                                </a>
+                                                <a routerLink="/company/edit/{{company.user_id}}"
+                                                    class="btn btn-primary btn-sm">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    (click)="delete(company.user_id)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-block card-footer d-flex justify-content-between align-items-center">
+                                <p class="mb-0">
+                                    Showing {{ showing.from }} to {{ showing.to }} of {{ showing.total }} companies
+                                </p>
+                                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                    (pageChange)="onPageChange($event)"></pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer">
+                    <div class="app-footer__inner">
+                        <!-- Footer content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Content section end -->
+    </div>
+</div>

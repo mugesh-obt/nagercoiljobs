@@ -1,0 +1,15 @@
+<router-outlet></router-outlet>
+<div id="loader" style="display: none;">
+  <div class="loader">
+    <div class="my-container">
+      <ng-template #customLoadingTemplate>
+        <div class="custom-class">
+          <h3>Loading...</h3>
+        </div>
+      </ng-template>
+
+      <ngx-loading [show]="loading" [config]="{backdropBorderRadius: '14px'}"
+        [template]="customLoadingTemplate"></ngx-loading>
+    </div>
+  </div>
+</div>

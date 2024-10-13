@@ -1,0 +1,110 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <app-sidebar [title]="'Dashboard'"></app-sidebar>
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-header d-flex justify-content-between">
+                                Latest Users
+                                <div class="page-title-actions ml-auto">
+                                    <a routerLink="/orders" class="btn btn-primary">
+                                        <i class="fa-solid fa-arrow-left"></i> All orders
+                                    </a>
+                                </div>
+                            </div>
+                            <form [formGroup]="Form" (ngSubmit)="dosubmit()">
+                                <div class="row justify-content-center p-3">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="user_id" class="form-label">
+                                            Companies Name
+                                            <span class="form-label-required text-danger">*</span>
+                                        </label>
+                                        <angular2-multiselect [data]="result.companies" formControlName="user_id"
+                                            [settings]="settings.company" class="form-control border">
+                                        </angular2-multiselect>
+                                        <span class="text-danger" *ngIf="err && err.user_id">{{
+                                            err.user_id
+                                            }}</span>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="plan_id" class="form-label">
+                                            Plans
+                                            <span class="form-label-required text-danger">*</span>
+                                        </label>
+                                        <angular2-multiselect [data]="result.plans" formControlName="plan_id"
+                                            [settings]="settings.plan" class="form-control border">
+                                        </angular2-multiselect>
+                                        <span class="text-danger" *ngIf="err && err.plan_id">{{
+                                            err.plan_id
+                                            }}</span>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="activated_date" class="form-label">
+                                            Activated Date
+                                        </label>
+                                        <input type="text" class="invoices-date-input form-control" ngxDaterangepickerMd
+                                            formControlName="activated_date" [singleDatePicker]="true"
+                                            [showCustomRangeLabel]="false" [alwaysShowCalendars]="false"
+                                            [linkedCalendars]="false" [showClearButton]="true"
+                                            [locale]="{ format: 'DD/MM/YYYY' }" placeholder="Select dates..."
+                                            (keydown)="$event.preventDefault()" />
+                                        <span class="text-danger" *ngIf="err && err.activated_date">{{
+                                            err.activated_date
+                                            }}</span>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="status" class="form-label">
+                                            Status
+                                            <span class="form-label-required text-danger">*</span>
+                                        </label>
+                                        <angular2-multiselect [data]="options.status" formControlName="status"
+                                            [settings]="settings.status" class="form-control border">
+                                        </angular2-multiselect>
+                                        <span class="text-danger" *ngIf="err && err.status">{{
+                                            err.status
+                                            }}</span>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="payment_method" class="form-label">
+                                            Payment Provider
+                                            <span class="form-label-required text-danger">*</span>
+                                        </label>
+                                        <angular2-multiselect [data]="options.provider" formControlName="payment_method"
+                                            [settings]="settings.provider" class="form-control border">
+                                        </angular2-multiselect>
+                                        <span class="text-danger" *ngIf="err && err.payment_method">{{
+                                            err.payment_method
+                                            }}</span>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="order_note" class="form-label">
+                                            Order Note
+                                        </label>
+                                        <textarea class="form-control" formControlName="order_note" rows="3"
+                                            placeholder="Enter order note..."></textarea>
+                                        <span class="text-danger" *ngIf="err && err.order_note">{{ err.order_note
+                                            }}</span>
+                                    </div>
+                                    <div class="col-md-12 text-right">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fa-solid fa-floppy-disk"></i> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer">
+                    <div class="app-footer__inner"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Content section end -->
+    </div>
+</div>

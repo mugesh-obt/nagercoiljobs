@@ -1,0 +1,208 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <!-- Top bar -->
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <!-- Side bar -->
+        <app-sidebar [title]="'Candidate Dashboard'"></app-sidebar>
+
+        <!-- Content section start -->
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+
+                <!-- Candidate Profile Section -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="d-flex">
+                        <!-- Candidate Profile -->
+                        <div class="profile-section">
+                            <img src="{{ result?.candidate?.user?.profile ? imgurl + result.candidate.user.profile : 'assets/images/no-picture.png' }}"
+                                alt="Candidate Profile" class="img-fluid" style="width: 150px;">
+                        </div>
+
+                        <!-- Candidate Info -->
+                        <div class="candidate-info ml-3">
+                            <h5>{{ result?.candidate?.user?.name }}</h5>
+                            <p>{{ result?.candidate?.user?.email }}</p>
+                            <a [href]="result?.candidate?.website" target="_blank">{{ result?.candidate?.website }}</a>
+
+                            <!-- Toggle Switches for Status and Verification -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="custom-control custom-switch mr-3">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="switchAccountStatus{{ result?.candidate?.user_id }}"
+                                        [checked]="result?.candidate?.user?.status === 'active'"
+                                        (change)="activate_user(result?.candidate?.user_id)">
+                                    <label class="custom-control-label"
+                                        for="switchAccountStatus{{ result?.candidate?.user_id }}">
+                                        {{ result?.candidate?.user?.status === 'active' ? 'Active' : 'In-Active' }}
+                                    </label>
+                                </div>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="switchEmailVerification{{ result?.candidate?.user_id }}"
+                                        [checked]="result?.candidate?.user?.email_verified_at != null"
+                                        (change)="modify_verification( result?.candidate?.user_id )">
+                                    <label class="custom-control-label"
+                                        for="switchEmailVerification{{ result?.candidate?.user_id }}">
+                                        {{ result?.candidate?.user?.email_verified_at ? 'Verified' : 'Not-Verified' }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Section (Profession, Experience, etc.) -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p><strong>Profession:</strong> {{ get_profession(result?.candidate?.profession_id) }}</p>
+                            <p><strong>Experience:</strong> {{ get_experience(result?.candidate?.experience) }}
+                            </p>
+                        </div>
+                        <div class="col-md-3">
+                            <p><strong>Marital Status:</strong> {{ get_marital_status(result?.candidate?.marital_status)
+                                }}</p>
+                            <p><strong>Education:</strong> {{ get_education(result?.candidate?.education) }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p><strong>Gender:</strong> {{ get_gender(result?.candidate?.gender) }}</p>
+                            <p><strong>Birth Date:</strong> {{ result?.candidate?.dob | date:'dd MMM, YYYY' }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p><strong>Phone:</strong> {{ result?.candidate?.whatsapp_number }}</p>
+                            <p><strong>Email:</strong> {{ result?.candidate?.user?.email }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description and Skills Section -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Bio</h5>
+                            <p [innerHTML]="result?.candidate?.bio || ''"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Skills</h5>
+                            <p>{{ get_skill(result?.candidate?.skills) }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Map Section and Languages -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h5>Location</h5>
+                            <p>{{result?.candidate?.location}}</p>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb={{ result?.candidate?.location?.google_map_link }}"
+                                width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        </div>
+                        <div class="col-md-3">
+                            <h5>Languages</h5>
+                            <p>{{ get_languages(result?.candidate?.languages) }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Applied Jobs Table -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>Applied Jobs</h5>
+                        <a routerLink="/applied-jobs" class="btn btn-secondary btn-sm">All Applied Jobs</a>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Job</th>
+                                <th>Category</th>
+                                <th>Salary</th>
+                                <th>Deadline</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let job of result?.candidate?.applied_jobs">
+                                <td>{{ job?.job?.title }}</td>
+                                <td>{{ get_job_category(job?.job?.category_id) }}</td>
+                                <td class="text-end">
+                                    <div *ngIf="job?.job?.salary === 'custom_salary'">
+                                        {{ job?.job?.salary }}
+                                        <div class="text-muted small">₹ {{ job?.job?.custom_salary }}</div>
+                                        <div class="text-muted small">{{ job?.job?.salary_type }}</div>
+                                    </div>
+                                    <div *ngIf="job?.job?.salary === 'salary_range'">
+                                        {{ job?.job?.salary }}
+                                        <div class="text-muted small">₹ {{ job?.job?.min_salary }} - ₹ {{
+                                            job?.job?.max_salary }}</div>
+                                        <div class="text-muted small">{{ job?.job?.salary_type }}</div>
+                                    </div>
+                                </td>
+                                <td>{{ job?.job?.deadline | date: 'dd MMM, YYYY' }} <div class="text-muted small">{{
+                                        job?.job?.status }}</div>
+                                </td>
+                                <td>
+                                    <a routerLink="/applied-job/view/{{job?.job?.id}}" class="btn btn-link">View details</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bookmark Jobs Table -->
+                <div class="main-card mb-3 card p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>Bookmark Jobs</h5>
+                        <a routerLink="/bookmark-jobs" class="btn btn-secondary btn-sm">All Bookmark Jobs</a>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Job</th>
+                                <th>Category</th>
+                                <th>Salary</th>
+                                <th>Deadline</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let job of result?.candidate?.bookmark_jobs">
+                                <td>{{ job?.job?.title }}</td>
+                                <td>{{ get_job_category(job?.job?.category_id) }}</td>
+                                <td class="text-end">
+                                    <div *ngIf="job?.job?.salary === 'custom_salary'">
+                                        {{ job?.job?.salary }}
+                                        <div class="text-muted small">₹ {{ job?.job?.custom_salary }}</div>
+                                        <div class="text-muted small">{{ job?.job?.salary_type }}</div>
+                                    </div>
+                                    <div *ngIf="job?.job?.salary === 'salary_range'">
+                                        {{ job?.job?.salary }}
+                                        <div class="text-muted small">₹ {{ job?.job?.min_salary }} - ₹ {{
+                                            job?.job?.max_salary }}</div>
+                                        <div class="text-muted small">{{ job?.job?.salary_type }}</div>
+                                    </div>
+                                </td>
+                                <td>{{ job?.job?.deadline | date: 'dd MMM, YYYY' }} <div class="text-muted small">{{
+                                    job?.job?.status }}</div>
+                                </td>
+                                <td>
+                                    <a routerLink="/bookmark-job/view/{{job?.job?.id}}" class="btn btn-link">View details</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="app-wrapper-footer">
+                    <div class="app-footer">
+                        <div class="app-footer__inner">
+                            <!-- Footer content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content section end -->
+        </div>
+    </div>
+</div>

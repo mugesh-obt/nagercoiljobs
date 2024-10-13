@@ -1,0 +1,35 @@
+<div class="login-page-container">
+    <div class="login-page-left">
+        <div class="project-logo">
+            <img src="./assets/images/logo-c.png" />
+        </div>
+    </div>
+    <div class="login-page-right">
+        <form  [formGroup]="form" (ngSubmit)="doSignup()">
+            <div class="form-group-sec">
+                <div class="form-title">
+                    Register 
+                </div>
+                <div>
+                    <label for="candidate">Candidate</label>
+                    <input type="radio" id="candidate" formControlName="role" value="candidate">
+                    <label for="company">Company</label>
+                    <input type="radio" id="company" formControlName="role" value="company">
+                </div>
+                <span class="error" *ngIf="err.role">{{err.role}}</span>
+                <input type="text" placeholder="User Name" formControlName="name">
+                <span class="error" *ngIf="err.name">{{err.name}}</span>
+                <input type="text" placeholder="Email" formControlName="email">
+                <span class="error" *ngIf="err.email">{{err.email}}</span>
+                <input type="password" placeholder="Password" formControlName="password">
+                <span class="error" *ngIf="err.password">{{err.password}}</span>
+                <input type="password" placeholder="Confirmation Password" formControlName="password_confirmation">
+                <span class="error" *ngIf="err.password_confirmation">{{err.password_confirmation}}</span>
+                <button type="submit">Sign Up</button>
+                <div class="signup-btn">
+                    <a  routerLink="/forgot-password" class="forget-password">  Forgot Password?  </a> 
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

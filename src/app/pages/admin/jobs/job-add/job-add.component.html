@@ -1,0 +1,318 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <app-sidebar [title]="'Create Company'"></app-sidebar>
+        <div class="app-main__outer">
+            <div class="main-card card-header text-center">
+                <h2>Create Job</h2>
+                <div class="page-title-actions ml-auto">
+                    <a routerLink="/jobs" class="btn btn-primary">
+                        <i class="fa-solid fa-arrow-left"></i> All Jobs
+                    </a>
+                </div>
+            </div>
+
+            <div class="d-flex">
+
+                <!-- Scrollable Card Section -->
+                <div class="main-content" style="flex: 1;">
+                    <form [formGroup]="Form" (ngSubmit)="dosubmit()">
+                        <div class="scrollable-card-section">
+                            <!-- Job Details Section -->
+                            <div class="main-card card mb-3">
+                                <div class="card-header">Job Details</div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="title">Title <span class="text-danger">*</span></label>
+                                                <input type="text" formControlName="title" class="form-control" />
+                                                <span class="text-danger" *ngIf="err?.title">{{ err.title }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="companydropdown">
+                                            <div class="form-group">
+                                                <label for="company_id">Company <span
+                                                        class="text-danger">*</span></label>
+                                                <angular2-multiselect [data]="result.companies"
+                                                    formControlName="company_id"
+                                                    [settings]="settings.company"></angular2-multiselect>
+                                                <span class="text-danger" *ngIf="err?.company_id">{{ err.company_id
+                                                    }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6" *ngIf="!companydropdown">
+                                            <div class="form-group">
+                                                <label for="company_name">Company <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" formControlName="company_name"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input"
+                                                    (change)="withoutCompany($event)" />
+                                                <label class="form-check-label" for="without_company">
+                                                    Create job without company account
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="category_id">Category</label>
+                                                <angular2-multiselect [data]="result.job_categories"
+                                                    formControlName="category_id"
+                                                    [settings]="settings.job_category"></angular2-multiselect>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="total_vacancies">Total Vacancies</label>
+                                                <input type="text" formControlName="total_vacancies"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="deadline">Deadline <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="invoices-date-input form-control"
+                                                    ngxDaterangepickerMd formControlName="deadline"
+                                                    [singleDatePicker]="true" [showClearButton]="true"
+                                                    [locale]="{ format: 'DD/MM/YYYY' }" placeholder="Select dates..."
+                                                    (keydown)="$event.preventDefault()" />
+                                                <span class="text-danger" *ngIf="err && err.deadline">{{
+                                                    err.deadline
+                                                    }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="main-card card mb-3">
+                                <div class="card-header">Location <span class="text-danger">*</span></div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <input type="text" formControlName="location" class="form-control"
+                                            placeholder="Enter location" />
+                                    </div>
+                                    <div class="google-map-frame">
+                                        <!-- Google map placeholder -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Salary Details Section -->
+                            <div class="main-card card mb-3">
+                                <div class="card-header">Salary Details</div>
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input type="radio" id="salary_range" class="form-check-input"
+                                            formControlName="salary" value="salary_range"
+                                            (change)="toggleSalaryInput($event)" />
+                                        <label class="form-check-label" for="salary_range">Salary Range</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="radio" id="custom_salary" class="form-check-input"
+                                            formControlName="salary" value="custom_salary"
+                                            (change)="toggleSalaryInput($event)" />
+                                        <label class="form-check-label" for="custom_salary">Custom Salary</label>
+                                    </div>
+
+                                    <!-- Conditional salary inputs -->
+                                    <div *ngIf="salaryrange">
+                                        <div class="form-group">
+                                            <label for="min_salary">Minimum Salary <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" formControlName="min_salary" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="max_salary">Maximum Salary <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" formControlName="max_salary" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="!salaryrange">
+                                        <div class="form-group">
+                                            <label for="custom_salary">Custom Salary <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" formControlName="custom_salary" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="salary_type">Salary Type <span class="text-danger">*</span></label>
+                                        <angular2-multiselect [data]="options.salary_type" formControlName="salary_type"
+                                            [settings]="settings.salary_type"></angular2-multiselect>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Attributes Section -->
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-header">Attributes</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="experience" class="form-label">Experience <span
+                                                            class="text-danger">*</span></label>
+                                                    <angular2-multiselect [data]="options.experience"
+                                                        formControlName="experience"
+                                                        [settings]="settings.experience"></angular2-multiselect>
+                                                    <span class="text-danger" *ngIf="err && err.experience">{{
+                                                        err.experience
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="job_role_id" class="form-label">Job Role</label>
+                                                    <angular2-multiselect [data]="result.job_roles"
+                                                        formControlName="job_role_id"
+                                                        [settings]="settings.job_role"></angular2-multiselect>
+                                                    <span class="text-danger" *ngIf="err && err.job_role_id">{{
+                                                        err.job_role_id
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="education" class="form-label">Education <span
+                                                            class="text-danger">*</span></label>
+                                                    <angular2-multiselect [data]="result.educations"
+                                                        formControlName="education"
+                                                        [settings]="settings.education"></angular2-multiselect>
+                                                    <span class="text-danger" *ngIf="err && err.education">{{
+                                                        err.education
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="job_type_id" class="form-label">Job Type</label>
+                                                    <angular2-multiselect [data]="result.job_types"
+                                                        formControlName="job_type_id"
+                                                        [settings]="settings.job_type"></angular2-multiselect>
+                                                    <span class="text-danger" *ngIf="err && err.job_type_id">{{
+                                                        err.job_type_id
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tags" class="form-label">Tags</label>
+                                                    <angular2-multiselect [data]="result.tags" formControlName="tags"
+                                                        [settings]="settings.tag"></angular2-multiselect>
+                                                    <span class="text-danger" *ngIf="err && err.tags">{{ err.tags
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="benefits_id" class="form-label">Benefits</label>
+                                                    <angular2-multiselect [data]="result.benefits"
+                                                        formControlName="benefits_id"
+                                                        [settings]="settings.benefit"></angular2-multiselect>
+                                                    <span class="text-danger" *ngIf="err && err.benefits_id">{{
+                                                        err.benefits_id
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Applicant Options Section -->
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-header">Applicant Options</div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="receive_applications" class="form-label">Receive Applications
+                                                <span class="text-danger">*</span></label>
+                                            <angular2-multiselect [data]="options.receive_application"
+                                                formControlName="receive_applications"
+                                                [settings]="settings.receive_application"></angular2-multiselect>
+                                            <span class="text-danger" *ngIf="err && err.receive_applications">{{
+                                                err.receive_applications }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Promote Section -->
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-header">Promote</div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input type="checkbox" value="featured"
+                                                    (change)="togglePromoteInput($event)" class="form-check-input"
+                                                    id="featured">
+                                                <label for="featured" class="form-check-label">Featured</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" value="highlight"
+                                                    (change)="togglePromoteInput($event)" class="form-check-input"
+                                                    id="highlight">
+                                                <label for="highlight" class="form-check-label">Highlight</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" value="remote"
+                                                    (change)="togglePromoteInput($event)" class="form-check-input"
+                                                    id="remote">
+                                                <label for="remote" class="form-check-label">Remote</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Description Section -->
+                            <div class="col-md-12">
+                                <div class="main-card mb-3 card">
+                                    <div class="card-header">Description</div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="description" class="form-label">Description</label>
+                                            <ngx-editor-menu [editor]="descriptioneditor"
+                                                [toolbar]="toolbar"></ngx-editor-menu>
+                                            <ngx-editor [editor]="descriptioneditor"
+                                                formControlName="description"></ngx-editor>
+                                            <span class="text-danger" *ngIf="err && err.description">{{ err.description
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer__inner"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<app-sidebar [title]="'Profile'"></app-sidebar>
+
+<div class="common-container">
+<h1>Profile Details</h1>
+<form  class="form" [formGroup]="form"  (ngSubmit)="doAction()">     
+    <div class="form-row">      
+        <label class="">Name <span class="required">*</span></label>             
+        <input type="text" class="form-input" placeholder="Name" formControlName="name">   
+        <span class="error" *ngIf="err.name">{{err.name}}</span>    
+        <label class="">Email <span class="required">*</span></label>             
+        <input type="text" class="form-input" placeholder="Email" formControlName="email">   
+        <span class="error" *ngIf="err.email">{{err.email}}</span>     
+        <!-- <label class="">Phone <span class="required">*</span></label>             
+        <input type="text" class="form-input" placeholder="Phone" formControlName="phone">   
+        <span class="error" *ngIf="err.phone">{{err.phone}}</span>     -->
+        <label class="">Password <span class="required">*</span></label>             
+        <input type="text" class="form-input" placeholder="password" formControlName="password">   
+        <span class="error" *ngIf="err.password">{{err.password}}</span>  
+        <label class="">Password Confirmation <span class="required">*</span></label>             
+        <input type="text" class="form-input" placeholder="password_confirmation" formControlName="password_confirmation">   
+        <span class="error" *ngIf="err.password_confirmation">{{err.password_confirmation}}</span>  
+        <div class="profile-img-sec">
+            <div class="profile-add-delete-sec">
+            <div *ngIf="imageUrl" class="img-deteted"  (click)="removeImage(1)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z"/><path fill="currentColor" d="M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071l-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2h4.558Zm3.717 5H6.003l.862 12.071a1 1 0 0 0 .997.929h8.276a1 1 0 0 0 .997-.929L17.997 7ZM10 10a1 1 0 0 1 .993.883L11 11v5a1 1 0 0 1-1.993.117L9 16v-5a1 1 0 0 1 1-1Zm4 0a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1Zm.28-6H9.72l-.333 1h5.226l-.334-1Z"/></g></svg>
+            </div>
+            <div *ngIf="user.image_url" class="img-deteted"  (click)="removeImage(2)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z"/><path fill="currentColor" d="M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071l-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2h4.558Zm3.717 5H6.003l.862 12.071a1 1 0 0 0 .997.929h8.276a1 1 0 0 0 .997-.929L17.997 7ZM10 10a1 1 0 0 1 .993.883L11 11v5a1 1 0 0 1-1.993.117L9 16v-5a1 1 0 0 1 1-1Zm4 0a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1Zm.28-6H9.72l-.333 1h5.226l-.334-1Z"/></g></svg>
+            </div>
+            <div  class="image-uploder-sec">
+                <input type="file" #Image (change)="handleFileInput($any($event).target.files);">
+                <img *ngIf="!imageUrl && !user.image_url" src="assets/images/profile-image.jpg" alt=""> 
+                <img *ngIf="imageUrl" src="{{imageUrl}}" alt=""> 
+                <img *ngIf="!imageUrl && user.image_url" src="{{user.image_url}}" alt=""> 
+            </div>
+           
+            <!-- <div class="img-added">
+                <input type="file" #Image (change)="handleFileInput($any($event).target.files);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.891 3.048a3.578 3.578 0 1 1 5.061 5.06l-.892.893L15 3.94l.891-.892ZM13.94 5.001L3.94 15a3.106 3.106 0 0 0-.825 1.476L2.02 21.078a.75.75 0 0 0 .904.903l4.601-1.096a3.106 3.106 0 0 0 1.477-.825L19 10.061l-5.061-5.06Z"/></svg>     
+               </div> -->
+            
+    </div>
+            </div>  
+            <button type="submit">Update</button>
+                                                      
+    </div>
+</form>
+</div>

@@ -1,0 +1,262 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <app-sidebar [title]="'Create Company'"></app-sidebar>
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-header d-flex justify-content-between">
+                                Create Company
+                                <div class="page-title-actions ml-auto">
+                                    <a routerLink="/companies" class="btn btn-primary">
+                                        <i class="fa-solid fa-arrow-left"></i> All companies
+                                    </a>
+                                </div>
+                            </div>
+                            <form [formGroup]="Form" (ngSubmit)="dosubmit()">
+                                <div class="row">
+                                    <!-- Account Details Card -->
+                                    <div class="col-md-6">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Account Details</div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="company_name" class="form-label">Company Name <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" formControlName="company_name"
+                                                        class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.company_name">{{
+                                                        err.company_name
+                                                        }}</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name" class="form-label">Username <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" formControlName="name" class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.name">{{
+                                                        err.name
+                                                        }}</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">Email <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="email" formControlName="email" class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.email">{{
+                                                        err.email
+                                                        }}</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="password" class="form-label">Password <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="password" formControlName="password"
+                                                        class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.password">{{
+                                                        err.password
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Images Card -->
+                                    <div class="col-md-6">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Images</div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="logo" class="form-label">Logo</label>
+                                                    <div class="image-upload-frame">
+                                                        <div class="image-preview">
+                                                            <img [src]="logo.preview" alt="Uploaded Logo"
+                                                                class="img-thumbnail" *ngIf="logo.preview" />
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-sm cancel-button"
+                                                                (click)="cancelLogo()">X</button>
+                                                        </div>
+                                                        <input type="file" formControlName="logo"
+                                                            (change)="onLogoChange($event)"
+                                                            accept=".jpeg,.jpg,.png,.gif,.svg"
+                                                            class="form-control-file" />
+                                                        <span class="text-danger" *ngIf="err && err.logo">{{
+                                                            err.logo
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="banner" class="form-label">Banner</label>
+                                                    <div class="image-upload-frame">
+                                                        <div class="image-preview">
+                                                            <img [src]="banner.preview" alt="Uploaded Banner"
+                                                                class="img-thumbnail" *ngIf="banner.preview" />
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-sm cancel-button"
+                                                                (click)="cancelBanner()">X</button>
+                                                        </div>
+                                                        <input type="file" formControlName="banner"
+                                                            accept=".jpeg,.jpg,.png,.gif,.svg"
+                                                            (change)="onBannerChange($event)"
+                                                            class="form-control-file" />
+                                                        <span class="text-danger" *ngIf="err && err.banner">{{
+                                                            err.banner
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Location Card -->
+                                    <div class="col-md-6">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Location <span class="text-danger">*</span></div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <input type="text" formControlName="location" class="form-control"
+                                                        placeholder="Enter location" />
+                                                    <span class="text-danger" *ngIf="err && err.location">{{
+                                                        err.location
+                                                        }}</span>
+                                                </div>
+                                                <div class="google-map-frame">
+                                                    <!-- Google map frame here -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contact Card -->
+                                    <div class="col-md-6">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Contact</div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="company_phone" class="form-label">Company Phone</label>
+                                                    <input type="text" formControlName="company_phone"
+                                                        class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.company_phone">{{
+                                                        err.company_phone
+                                                        }}</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="company_email" class="form-label">Company Email</label>
+                                                    <input type="email" formControlName="company_email"
+                                                        class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.company_email">{{
+                                                        err.company_email
+                                                        }}</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="website" class="form-label">Website</label>
+                                                    <input type="url" formControlName="website" class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.website">{{
+                                                        err.website
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Profile Details Card -->
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Profile Details</div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="organization_id" class="form-label">Organization
+                                                                <span class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="result.organizations"
+                                                                formControlName="organization_id"
+                                                                [settings]="settings.organization"></angular2-multiselect>
+                                                            <span class="text-danger"
+                                                                *ngIf="err && err.organization_id">{{
+                                                                err.organization_id
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="industry_id" class="form-label">Industry <span
+                                                                    class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="result.industries"
+                                                                formControlName="industry_id"
+                                                                [settings]="settings.industry"></angular2-multiselect>
+                                                            <span class="text-danger" *ngIf="err && err.industry_id">{{
+                                                                err.industry_id
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="team_size" class="form-label">Team Size</label>
+                                                            <angular2-multiselect [data]="options.team_size"
+                                                                formControlName="team_size"
+                                                                [settings]="settings.team_size"></angular2-multiselect>
+                                                            <span class="text-danger" *ngIf="err && err.team_size">{{
+                                                                err.team_size
+                                                                }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="establishment_date"
+                                                                class="form-label">Establishment Date <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" class="invoices-date-input form-control"
+                                                                ngxDaterangepickerMd
+                                                                formControlName="establishment_date"
+                                                                [singleDatePicker]="true" [showClearButton]="true"
+                                                                [locale]="{ format: 'DD/MM/YYYY' }"
+                                                                placeholder="Select dates..."
+                                                                (keydown)="$event.preventDefault()" />
+                                                            <span class="text-danger"
+                                                                *ngIf="err && err.establishment_date">{{
+                                                                err.establishment_date
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="bio" class="form-label">Bio</label>
+                                                            <ngx-editor-menu [editor]="bioeditor"
+                                                                [toolbar]="toolbar"></ngx-editor-menu>
+                                                            <ngx-editor [editor]="bioeditor"
+                                                                formControlName="bio"></ngx-editor>
+                                                            <span class="text-danger" *ngIf="err && err.bio">{{
+                                                                err.bio
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="vision" class="form-label">Vision</label>
+                                                            <ngx-editor-menu [editor]="visioneditor"
+                                                                [toolbar]="toolbar"></ngx-editor-menu>
+                                                            <ngx-editor [editor]="visioneditor"
+                                                                formControlName="vision"></ngx-editor>
+                                                            <span class="text-danger" *ngIf="err && err.vision">{{
+                                                                err.vision
+                                                                }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 text-right">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa-solid fa-floppy-disk"></i> Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer__inner"></div>
+            </div>
+        </div>
+    </div>
+</div>

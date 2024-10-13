@@ -1,0 +1,145 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <!-- Top bar -->
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <!-- Side bar -->
+        <app-sidebar [title]="'Dashboard'"></app-sidebar>
+        <!-- Content section start -->
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="app-page-title">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-heading d-flex align-items-center">
+                            <div class="page-title-icon mr-3">
+                                <i class="fa-solid fa-credit-card"></i>
+                            </div>
+                            <div>All orders</div>
+                        </div>
+                        <div class="page-title-actions">
+                            <a routerLink="/order/create" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i> Create
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <form [formGroup]="Form">
+                    <div class="row mb-3">
+                        <!-- Adjusting multiselect dropdowns layout -->
+                        <div class="col-md-4">
+                            <angular2-multiselect [data]="result.companies" formControlName="company"
+                                [settings]="settings.company" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <div class="col-md-4">
+                            <angular2-multiselect [data]="options.provider" formControlName="payment_method"
+                                [settings]="settings.provider" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <div class="col-md-4">
+                            <angular2-multiselect [data]="result.plans" formControlName="plan"
+                                [settings]="settings.plan" (onSelect)="onItemSelect($event)"
+                                (onDeSelect)="OnItemDeSelect($event)"
+                                (onDeSelectAll)="OnItemDeSelect($event)"></angular2-multiselect>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" (click)="resetFilters()" class="btn btn-secondary ml-2">
+                                <i class="fa-solid fa-undo"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center per-page-dropdown-container">
+                        <label for="per_page" class="mr-2">Show</label>
+                        <select id="per_page" class="form-control per-page-dropdown" [(ngModel)]="per_page"
+                            (change)="onItemsPerPageChange($event)">
+                            <option *ngFor="let count of perPageOptions" [value]="count">{{ count }}</option>
+                        </select>
+                        <label for="per_page" class="ml-2">entries</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="table-responsive">
+                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th (click)="doSort('id')">Order id
+                                                <i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'id' && dir === 'asc', 'fa-sort-down': column === 'id' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center" (click)="doSort('company')">Company
+                                                <i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'company' && dir === 'asc', 'fa-sort-down': column === 'company' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center">Plan</th>
+                                            <th class="text-center">Amount (INR)</th>
+                                            <th class="text-center">Payment Method</th>
+                                            <th class="text-center" (click)="doSort('created_at')">Created Time
+                                                <i class="fa"
+                                                    [ngClass]="{'fa-sort-up': column === 'created_at' && dir === 'asc', 'fa-sort-down': column === 'created_at' && dir === 'desc'}"></i>
+                                            </th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let order of result.orders | paginate: { itemsPerPage: per_page, currentPage: page, totalItems: showing.total }; let i = index">
+                                            <td class="text-center text-muted">{{ i + 1 }}</td>
+                                            <td>{{ order.id }}</td>
+                                            <td class="text-center">
+                                                <div class="widget-content p-0 d-flex align-items-center">
+                                                    <img width="40" class="rounded-circle mr-3"
+                                                        src="{{ order?.user?.profile ? imgurl+order.user.profile : 'assets/images/no-img.png' }}"
+                                                        alt="Avatar">
+                                                    <div class="flex-column">
+                                                        <div class="widget-heading">{{order?.user?.name}}</div>
+                                                        <div class="widget-subheading opacity-7">{{order?.user?.email}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="badge badge-primary">{{order?.plan?.label}}</div>
+                                            </td>
+                                            <td class="text-center text-muted">{{order?.plan?.price}}</td>
+                                            <td>{{ order?.payment_method }}</td>
+                                            <td class="text-center text-muted">{{ created_time(order.created_at) }}</td>
+                                            <td class="text-center">
+                                                <a routerLink="/order/view/{{order.id}}" class="btn btn-primary btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                                <a routerLink="" class="btn btn-link">View invoice
+                                                    <i class="fa-solid fa-angle-right"></i></a>
+                                                <button type="button" class="btn btn-warning btn-sm">
+                                                    <i class="fa-solid fa-download"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-block card-footer d-flex justify-content-between align-items-center">
+                                <p class="mb-0">
+                                    Showing {{ showing.from }} to {{ showing.to }} of {{ showing.total }} orders
+                                </p>
+                                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                                    (pageChange)="onPageChange($event)"></pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer">
+                    <div class="app-footer__inner">
+                        <!-- Footer content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Content section end -->
+    </div>
+</div>

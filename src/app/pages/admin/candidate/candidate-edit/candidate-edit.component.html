@@ -1,0 +1,241 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <app-sidebar [title]="'Create Candidate'"></app-sidebar>
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-header d-flex justify-content-between">
+                                Create Candidate
+                                <div class="page-title-actions ml-auto">
+                                    <a routerLink="/candidates" class="btn btn-primary">
+                                        <i class="fa-solid fa-arrow-left"></i> All Candidates
+                                    </a>
+                                </div>
+                            </div>
+
+                            <form [formGroup]="Form" (ngSubmit)="dosubmit()">
+                                <div class="row">
+                                    <!-- Account Details Section -->
+                                    <div class="col-md-6">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Account Details</div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="name" class="form-label">Username <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" formControlName="name" class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.name">{{ err.name
+                                                        }}</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">Email <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="email" formControlName="email" class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.email">{{ err.email
+                                                        }}</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="password" class="form-label">Password <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="password" formControlName="password"
+                                                        class="form-control" />
+                                                    <span class="text-danger" *ngIf="err && err.password">{{
+                                                        err.password }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Resume</div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <div class="image-upload-frame">
+                                                        <div class="image-preview">
+                                                            <img [src]="resume.preview" alt="Uploaded Resume"
+                                                                class="img-thumbnail" *ngIf="resume.preview" />
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-sm cancel-button"
+                                                                (click)="cancelResume()">X</button>
+                                                        </div>
+                                                        <input type="file" formControlName="resume" accept=".pdf"
+                                                            (change)="onResumeChange($event)"
+                                                            class="form-control-file" />
+                                                        <span class="text-danger" *ngIf="err && err.resume">{{
+                                                            err.resume
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Location Section -->
+                                    <div class="col-md-6">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Location <span class="text-danger">*</span></div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <input type="text" formControlName="location" class="form-control"
+                                                        placeholder="Enter location" />
+                                                    <span class="text-danger" *ngIf="err && err.location">{{
+                                                        err.location }}</span>
+                                                </div>
+                                                <div class="google-map-frame">
+                                                    <!-- Google map frame here -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Profile Details Section -->
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header">Profile Details</div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="profession_id" class="form-label">Profession
+                                                                <span class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="result.professions"
+                                                                formControlName="profession_id"
+                                                                [settings]="settings.profession"></angular2-multiselect>
+                                                            <span class="text-danger"
+                                                                *ngIf="err && err.profession_id">{{
+                                                                err.profession_id
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="education" class="form-label">Education <span
+                                                                    class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="result.educations"
+                                                                formControlName="education"
+                                                                [settings]="settings.education"></angular2-multiselect>
+                                                            <span class="text-danger"
+                                                                *ngIf="err['education.0']">{{err['education.0']}}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <label for="dob" class="form-label">Date of birth<span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text"
+                                                                    class="invoices-date-input form-control"
+                                                                    ngxDaterangepickerMd formControlName="dob"
+                                                                    [singleDatePicker]="true" [showClearButton]="true"
+                                                                    [locale]="{ format: 'DD/MM/YYYY' }"
+                                                                    placeholder="Select dates..."
+                                                                    (keydown)="$event.preventDefault()" />
+                                                                <span class="text-danger" *ngIf="err && err.dob">{{
+                                                                    err.dob
+                                                                    }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="skills" class="form-label">Skills <span
+                                                                    class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="result.skills"
+                                                                formControlName="skills"
+                                                                [settings]="settings.skill"></angular2-multiselect>
+                                                            <span class="text-danger"
+                                                                *ngIf="err['skills.0']">{{err['skills.0']}}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="website" class="form-label">Website <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="text" formControlName="website"
+                                                                class="form-control" />
+                                                            <span class="text-danger" *ngIf="err && err.website">{{
+                                                                err.website
+                                                                }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="experience" class="form-label">Experience <span
+                                                                    class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="options.experience"
+                                                                formControlName="experience"
+                                                                [settings]="settings.experience"></angular2-multiselect>
+                                                            <span class="text-danger" *ngIf="err && err.experience">{{
+                                                                err.experience
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="marital_status" class="form-label">Marital
+                                                                Status<span class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="options.marital_status"
+                                                                formControlName="marital_status"
+                                                                [settings]="settings.marital_status"></angular2-multiselect>
+                                                            <span class="text-danger"
+                                                                *ngIf="err && err.marital_status">{{
+                                                                err.marital_status
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="job_role_id" class="form-label">Job Role <span
+                                                                    class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="result.job_roles"
+                                                                formControlName="job_role_id"
+                                                                [settings]="settings.job_role"></angular2-multiselect>
+                                                            <span class="text-danger" *ngIf="err && err.job_role_id">{{
+                                                                err.job_role_id
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="gender" class="form-label">Gender <span
+                                                                    class="text-danger">*</span></label>
+                                                            <angular2-multiselect [data]="options.gender"
+                                                                formControlName="gender"
+                                                                [settings]="settings.gender"></angular2-multiselect>
+                                                            <span class="text-danger" *ngIf="err && err.gender">{{
+                                                                err.gender
+                                                                }}</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="languages" class="form-label">Languages</label>
+                                                            <angular2-multiselect [data]="options.languages"
+                                                                formControlName="languages"
+                                                                [settings]="settings.languages"></angular2-multiselect>
+                                                            <span class="text-danger"
+                                                                *ngIf="err['languages.0']">{{err['languages.0']}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="bio" class="form-label">Bio</label>
+                                                    <ngx-editor-menu [editor]="bioeditor"
+                                                        [toolbar]="toolbar"></ngx-editor-menu>
+                                                    <ngx-editor [editor]="bioeditor" formControlName="bio"></ngx-editor>
+                                                    <span class="text-danger" *ngIf="err && err.bio">{{
+                                                        err.bio
+                                                        }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-right">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa-solid fa-floppy-disk"></i> Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer__inner"></div>
+            </div>
+        </div>
+    </div>
+</div>

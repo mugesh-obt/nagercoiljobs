@@ -1,0 +1,110 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <!-- Top bar -->
+    <app-topbar></app-topbar>
+    <div class="app-main">
+        <!-- Side bar -->
+        <app-sidebar [title]="'Dashboard'"></app-sidebar>
+        <!-- Content section start -->
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="app-page-title">
+                    <div class="page-title-wrapper">
+                        <div class="page-title-heading">
+                            <div class="page-title-icon">
+                                <i class="fa-solid fa-chart-simple"></i>
+
+                            </div>
+                            <div>Admin Dashboard
+                                <div class="page-title-subheading">This is an example dashboard created using build-in
+                                    elements and
+                                    components.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="mb-3 card">
+                            <div class="card-header-tab card-header-tab-animation card-header">
+                                <div class="card-header-title">
+                                    <i class="header-icon lnr-apartment icon-gradient bg-love-kiss"> </i>
+                                    Sales Report
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="mb-3 card">
+                            <div class="row">
+                                <span>Billing Address</span>
+                                <span>Payment Method</span>
+                            </div>
+                            <div class="row">
+                                <span>IntelliWare</span>
+                                <span>Method: Offline (Custom)</span>
+                            </div>
+                            <div class="row">
+                                <span>Email: intelliwaremail.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-card mb-3 card">
+                            <div class="card-header">Recently Published Jobs
+
+                            </div>
+                            <div class="table-responsive">
+                                <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th>Title</th>
+                                            <th class="text-center">Experience</th>
+                                            <th class="text-center">Job type</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <tr *ngFor="let item of collection | paginate: { itemsPerPage: 10, currentPage: p }"> -->
+                                        <tr>
+                                            <td class="text-center text-muted">#345</td>
+                                            <td>
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-left flex2">
+                                                        <div class="widget-heading">Job title</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">3+ Years</td>
+                                            <td class="text-center">Contractual</td>
+                                            <td class="text-center">
+                                                <button type="button" id="PopoverCustomT-1"
+                                                    class="btn btn-primary btn-sm"><i
+                                                        class="fa-solid fa-eye"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-block text-center card-footer">
+                                <pagination-controls (pageChange)="$event"></pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-wrapper-footer">
+                <div class="app-footer">
+                    <div class="app-footer__inner">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Content section end -->
+    </div>
+</div>
